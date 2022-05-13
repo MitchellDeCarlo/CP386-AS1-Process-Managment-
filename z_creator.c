@@ -10,7 +10,7 @@ int main()
     
     if (proc_pid > 0){
         printf("In parent process!\n");
-         sleep(5);
+         sleep(10);
        
     }
     else{
