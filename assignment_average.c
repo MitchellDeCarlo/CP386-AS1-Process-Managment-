@@ -46,7 +46,36 @@ int main(){
         }
         printf("\n");
     }
-
     fclose(fp);
+    pid_t GradTA = fork();
+
+    if(GradTA == 0){
+        sleep(1);
+        printf("I am child my parent is %d and I am %d\n",getppid(),getpid());
+    }
+    else{
+        pid_t GradTA_2 = fork();
+
+        if(GradTA_2 == 0){
+            sleep(2);
+            printf("I am child 2 my parent is %d and I am %d\n",getppid(),getpid());
+        }
+        else{
+            pid_t GradTA_3 = fork();
+
+            if(GradTA_3 == 0){
+                sleep(3);
+                printf("I am child 3 my parent is %d and I am %d\n",getppid(),getpid());
+            }  
+             
+            else{
+                system("ps -l");
+                printf("I am parent my id is %d\n",getpid());
+                wait(NULL);
+            }
+        }
+    }
+
+    
     return 0;
 }
