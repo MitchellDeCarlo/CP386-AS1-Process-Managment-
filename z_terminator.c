@@ -40,7 +40,7 @@ int main(){
 
     while((ch = fgetc(fp)) != EOF){
        
-        if(count >= 17 && count <= 20){
+        if(count >= 16 && count <= 20){
             pidnum[index] = ch;
             index++;
         }
