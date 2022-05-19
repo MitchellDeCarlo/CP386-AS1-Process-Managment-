@@ -39,7 +39,6 @@ int main()
         {
             temp_in = 0;
             grades[index][index_1] = atoi(temp);
-            printf("%d [%d] [%d]\n", grades[index][index_1], index, index_1);
             index++;
             temp[0] = '\0';
             temp[1] = '\0';
@@ -52,32 +51,24 @@ int main()
         }
         grades[5][9] = atoi(temp);
     }
-    for (int i = 0; i < 6; i++)
-    {
-        for (int j = 0; j < 10; j++)
-        {
-            printf("%d ", grades[i][j]);
-        }
-        printf("\n");
-    }
     fclose(fp);
     GradTA = fork();
 
     if (GradTA == 0)
     {
-        printf("GradTA PID: %d PPID: %d\n", getpid(), getppid());
+        //printf("GradTA PID: %d PPID: %d\n", getpid(), getppid());
 
         pid_t TA = fork();
 
         if (TA == 0)
         {
-            printf("TA PID: %d PPID: %d\n", getpid(), getppid());
+           // printf("TA PID: %d PPID: %d\n", getpid(), getppid());
             for (int i = 0; i < 10; i++)
             {
                 sum += grades[0][i];
             }
-            finalavg = sum / 10;
-            printf("Assignment 1 - Average = %.1f\n", finalavg);
+            finalavg = (float)sum / 10;
+            printf("Assignment 1 - Average = %f\n", finalavg);
             sum = 0;
             finalavg = 0;
             exit(0);
@@ -88,13 +79,13 @@ int main()
             pid_t TA_2 = fork();
             if (TA_2 == 0)
             {
-                printf("TA 2 PID: %d PPID: %d\n", getpid(), getppid());
+                //printf("TA 2 PID: %d PPID: %d\n", getpid(), getppid());
                 for (int i = 0; i < 10; i++)
                 {
                     sum += grades[1][i];
                 }
-                finalavg = sum / 10;
-                printf("Assignment 2 - Average = %.2f\n", finalavg);
+                finalavg = (float)sum / 10;
+                printf("Assignment 2 - Average = %f\n", finalavg);
                 sum = 0;
                 finalavg = 0;
                 exit(0);
@@ -109,19 +100,19 @@ int main()
 
         if (GradTA_2 == 0)
         {
-            printf("GradTA 2 PID: %d PPID: %d\n", getpid(), getppid());
+           // printf("GradTA 2 PID: %d PPID: %d\n", getpid(), getppid());
 
             pid_t TA_3 = fork();
 
             if (TA_3 == 0)
             {
-                printf("TA 3 PID: %d PPID: %d\n", getpid(), getppid());
+                //printf("TA 3 PID: %d PPID: %d\n", getpid(), getppid());
                 for (int i = 0; i < 10; i++)
                 {
                     sum += grades[2][i];
                 }
-                finalavg = sum / 10;
-                printf("Assignment 3 - Average = %.1f\n", finalavg);
+                finalavg = (float)sum / 10;
+                printf("Assignment 3 - Average = %f\n", finalavg);
                 sum = 0;
                 finalavg = 0;
                 exit(0);
@@ -132,13 +123,13 @@ int main()
                 pid_t TA_4 = fork();
                 if (TA_4 == 0)
                 {
-                    printf("TA 4 PID: %d PPID: %d\n", getpid(), getppid());
+                    //printf("TA 4 PID: %d PPID: %d\n", getpid(), getppid());
                     for (int i = 0; i < 10; i++)
                     {
                         sum += grades[3][i];
                     }
-                    finalavg = sum / 10;
-                    printf("Assignment 4 - Average = %.1f\n", finalavg);
+                    finalavg = (float)sum / 10;
+                    printf("Assignment 4 - Average = %f\n", finalavg);
                     sum = 0;
                     finalavg = 0;
                     exit(0);
@@ -152,19 +143,19 @@ int main()
 
             if (GradTA_3 == 0)
             {
-                printf("GradTA 3 PID: %d PPID: %d\n", getpid(), getppid());
+           //     printf("GradTA 3 PID: %d PPID: %d\n", getpid(), getppid());
 
                 pid_t TA_5 = fork();
 
                 if (TA_5 == 0)
                 {
-                    printf("TA 5 PID: %d PPID: %d\n", getpid(), getppid());
+                    //printf("TA 5 PID: %d PPID: %d\n", getpid(), getppid());
                     for (int i = 0; i < 10; i++)
                     {
                         sum += grades[4][i];
                     }
-                    finalavg = sum / 10;
-                    printf("Assignment 5 - Average = %.1f\n", finalavg);
+                    finalavg = (float)sum / 10;
+                    printf("Assignment 5 - Average = %f\n", finalavg);
                     sum = 0;
                     finalavg = 0;
                     exit(0);
@@ -175,13 +166,13 @@ int main()
                     pid_t TA_6 = fork();
                     if (TA_6 == 0)
                     {
-                        printf("TA 6 PID: %d PPID: %d\n", getpid(), getppid());
+                        //printf("TA 6 PID: %d PPID: %d\n", getpid(), getppid());
                         for (int i = 0; i < 10; i++)
                         {
                             sum += grades[5][i];
                         }
-                        finalavg = sum / 10;
-                        printf("Assignment 6 - Average = %.2f\n", finalavg);
+                        finalavg = (float)sum / 10;
+                        printf("Assignment 6 - Average = %f\n", finalavg);
                         sum = 0;
                         finalavg = 0;
                         exit(0);
@@ -198,7 +189,7 @@ int main()
         {
             wait(NULL);
         }
-        printf("I am parent PID: %d\n", getpid());
+       // printf("I am parent PID: %d\n", getpid());
     }
 
     return 0;
