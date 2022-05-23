@@ -64,18 +64,17 @@ int main(int argc, char *argv[])
             int iter2 = 0;
             for (int i = 0; i < strlen(commands); i++)
             {
-                if (commands[i] != '\n')
+                if (commands[i] != '\n' || commands[i] != '\0')
                 {
                     
                     temp[iter++] = commands[i];
                 }
                 else
                 {
-                   // printf("%s\n",temp);
-                    arr[iter2++] = temp;
-                    for (int i = 0; i < 20; i++)
+                    strcpy(arr[iter2++],temp);
+                    for (int j = 0; j < 20; j++)
                     {
-                        temp[i] = '\0';
+                        temp[j] = '\0';
                     }
                     iter =0;
                 }
