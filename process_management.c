@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
         ptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);
         sprintf(ptr, "%s", comm);
         ptr += strlen(comm);
+        exit(0);
     }
     else
     {
@@ -55,33 +56,49 @@ int main(int argc, char *argv[])
             char temp[20];
             strcpy(commands, (char *)ptr);
 
-            char **arr = malloc(5 * sizeof(char*));
+            char **arr = malloc(5 * sizeof(char *));
 
-            for (int i =0; i < 5; i++){
-                arr[i] = (char *)malloc(30 * sizeof(char));
+            for (int i = 0; i < 5; i++)
+            {
+                arr[i] = (char *)malloc(10);
             }
             int iter = 0;
             int iter2 = 0;
-            for (int i = 0; i < strlen(commands); i++)
+            for (int i = 0; i < strlen(commands)+1; i++)
             {
-                if (commands[i] != '\n' || commands[i] != '\0')
+                if (commands[i] != '\n')
                 {
-                    
-                    temp[iter++] = commands[i];
+                    if (commands[i] == '\0')
+                    {
+                       // printf("%s\n", temp);
+                        strcpy(arr[iter2++], temp);
+                        for (int j = 0; j < 20; j++)
+                        {
+                            temp[j] = '\0';
+                        }
+                        iter = 0;
+                    }
+                    else
+                    {
+                        temp[iter++] = commands[i];
+                        temp[iter] = '\0';
+                    }
                 }
                 else
                 {
-                    strcpy(arr[iter2++],temp);
+                    //printf("%s\n", temp);
+                    strcpy(arr[iter2++], temp);
                     for (int j = 0; j < 20; j++)
                     {
                         temp[j] = '\0';
                     }
-                    iter =0;
+                    iter = 0;
                 }
             }
 
-            for(int i =0; i < 5; i++){
-               printf("%s\n",arr[i]);
+            for (int i = 0; i < 5; i++)
+            {
+                printf("%s\n", arr[i]);
             }
 
             shm_unlink(name);
