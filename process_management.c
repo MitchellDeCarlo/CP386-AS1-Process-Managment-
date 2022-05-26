@@ -46,31 +46,31 @@ int main(int argc, char *argv[])
     else
     {
         wait(NULL);
+        shm_fd = shm_open(name, O_RDONLY, 0666);
+        ptr = mmap(0, SIZE, PROT_READ, MAP_SHARED, shm_fd, 0);
+        char commands[40];
+        char temp[20];
+        strcpy(commands, (char *)ptr);
+
+        char **arr = malloc(5 * sizeof(char *));
+
+        for (int i = 0; i < 5; i++)
+        {
+            arr[i] = (char *)malloc(10);
+        }
         pid_t child2 = fork();
 
         if (child2 == 0)
         {
-            shm_fd = shm_open(name, O_RDONLY, 0666);
-            ptr = mmap(0, SIZE, PROT_READ, MAP_SHARED, shm_fd, 0);
-            char commands[40];
-            char temp[20];
-            strcpy(commands, (char *)ptr);
-
-            char **arr = malloc(5 * sizeof(char *));
-
-            for (int i = 0; i < 5; i++)
-            {
-                arr[i] = (char *)malloc(10);
-            }
             int iter = 0;
             int iter2 = 0;
-            for (int i = 0; i < strlen(commands)+1; i++)
+            for (int i = 0; i < strlen(commands) + 1; i++)
             {
                 if (commands[i] != '\n')
                 {
                     if (commands[i] == '\0')
                     {
-                       // printf("%s\n", temp);
+                        // printf("%s\n", temp);
                         strcpy(arr[iter2++], temp);
                         for (int j = 0; j < 20; j++)
                         {
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
                 }
                 else
                 {
-                    //printf("%s\n", temp);
+                    // printf("%s\n", temp);
                     strcpy(arr[iter2++], temp);
                     for (int j = 0; j < 20; j++)
                     {
@@ -104,6 +104,12 @@ int main(int argc, char *argv[])
             shm_unlink(name);
 
             free(arr);
+
+            exit(0);
+        }
+        else{
+            wait(NULL);
+            printf("Done!\n");
         }
     }
 
