@@ -10,14 +10,38 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 
+#define BUFFER 25
+#define READER 0
+#define WRITER 1
+
+void writeoutput(char *command, char *output)
+{
+    FILE *fp;
+    fp = fopen("output.txt", "a");
+    fprintf(fp, "The output of: %s : is\n", command);
+    fprintf(fp, ">>>>>>>>>>>>>>>\n%s<<<<<<<<<<<<<<<\n", output);
+    fclose(fp);
+}
+
 int main(int argc, char *argv[])
 {
     void *ptr;
     int shm_fd;
     const int SIZE = 4096;
     const char *name = "OS";
+    char write_msg[BUFFER];
+    char read_msg[BUFFER];
+
+    int fd[2];
+
+    if (pipe(fd) == -1)
+    {
+        return -1;
+    }
+
     pid_t child1 = fork();
     char comm[100];
+
     if (child1 == 0)
     {
         FILE *fp = fopen(argv[1], "r");
@@ -58,33 +82,14 @@ int main(int argc, char *argv[])
         {
             arr[i] = (char *)malloc(10);
         }
-        pid_t child2 = fork();
-
-        if (child2 == 0)
+        shm_unlink(name);
+        int iter = 0;
+        int iter2 = 0;
+        for (int i = 0; i < strlen(commands) + 1; i++)
         {
-            int iter = 0;
-            int iter2 = 0;
-            for (int i = 0; i < strlen(commands) + 1; i++)
+            if (commands[i] != '\n')
             {
-                if (commands[i] != '\n')
-                {
-                    if (commands[i] == '\0')
-                    {
-                        // printf("%s\n", temp);
-                        strcpy(arr[iter2++], temp);
-                        for (int j = 0; j < 20; j++)
-                        {
-                            temp[j] = '\0';
-                        }
-                        iter = 0;
-                    }
-                    else
-                    {
-                        temp[iter++] = commands[i];
-                        temp[iter] = '\0';
-                    }
-                }
-                else
+                if (commands[i] == '\0')
                 {
                     // printf("%s\n", temp);
                     strcpy(arr[iter2++], temp);
@@ -94,24 +99,49 @@ int main(int argc, char *argv[])
                     }
                     iter = 0;
                 }
+                else
+                {
+                    temp[iter++] = commands[i];
+                    temp[iter] = '\0';
+                }
             }
-
-            for (int i = 0; i < 5; i++)
+            else
             {
-                printf("%s\n", arr[i]);
+                // printf("%s\n", temp);
+                strcpy(arr[iter2++], temp);
+                for (int j = 0; j < 20; j++)
+                {
+                    temp[j] = '\0';
+                }
+                iter = 0;
             }
+        }
+        pid_t child2 = fork();
 
-            shm_unlink(name);
+        if (child2 == 0)
+        {
 
-            free(arr);
+           // close(fd[0]);
+            //dup2(fd[1], 1);
+            execvp(arr[0], arr);
 
             exit(0);
         }
-        else{
-            wait(NULL);
-            printf("Done!\n");
-        }
-    }
+        else
+        {
+            // close(fd[1]); // parent doesn't write
 
+            // char reading_buf[1];
+            // while (read(fd[0], reading_buf, 1) > 0)
+            // {
+            //     write(1, reading_buf, 1); // 1 -> stdout
+            // }
+            // free(arr);
+            // close(fd[0]);
+            wait(NULL);
+        }
+
+    }
     return 0;
 }
+
