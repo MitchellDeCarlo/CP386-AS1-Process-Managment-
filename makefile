@@ -23,7 +23,7 @@ runq2: assignment_average
 	./assignment_average sample_in_grades.txt
 	
 runq3: warnings_OK
-	./process_management sample_in_process.txt
+	./process_management sample_in_process.txt | cat output.txt
 
 clean: *.c
 	rm -f assignment_average process_management z_creator z_terminator 

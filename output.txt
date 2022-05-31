@@ -1,1 +1,39 @@
-
+The output of: uname -a : is
+>>>>>>>>>>>>>>>
+Linux DESKTOP-QI1P0EG 4.4.0-19041-Microsoft #1237-Microsoft Sat Sep 11 14:32:00 PST 2021 x86_64 x86_64 x86_64 GNU/Linux
+cù›¼ñ<<<<<<<<<<<<<<<
+The output of: free -m : is
+>>>>>>>>>>>>>>>
+              total        used        free      shared  buff/cache   available
+Mem:           7778        6301        1252          17         223        1345
+Swap:         23552         732       22819
+<<<<<<<<<<<<<<<
+The output of: ls -l -a -F : is
+>>>>>>>>>>>>>>>
+total 136
+drwxr-xr-x 1 mitch mitch  4096 May 31 17:14 ./
+drwxr-xr-x 1 mitch mitch  4096 May 31 16:04 ../
+drwxr-xr-x 1 mitch mitch  4096 May 31 16:05 .git/
+drwxr-xr-x 1 mitch mitch  4096 May 31 16:05 .vscode/
+-rwxr-xr-x 1 mitch mitch 21600 May 31 16:05 assignment_average*
+-rw-r--r-- 1 mitch mitch  5287 May 31 16:05 assignment_average.c
+-rw-r--r-- 1 mitch mitch   880 May 31 16:57 makefile
+-rw-r--r-- 1 mitch mitch    86 May 31 16:05 out.txt
+-rw-r--r-- 1 mitch mitch   451 May 31 17:14 output.txt
+-rwxr-xr-x 1 mitch mitch 22744 May 31 17:14 process_management*
+-rw-r--r-- 1 mitch mitch  4791 May 31 17:14 process_management.c
+-rw-r--r-- 1 mitch mitch   175 May 31 16:05 sample_in_grades.txt
+-rw-r--r-- 1 mitch mitch    39 May 31 16:05 sample_in_process.txt
+-rwxr-xr-x 1 mitch mitch 19632 May 31 16:05 z_creator*
+-rw-r--r-- 1 mitch mitch   326 May 31 16:05 z_creator.c
+-rwxr-xr-x 1 mitch mitch 20192 May 31 16:05 z_terminator*
+-rw-r--r-- 1 mitch mitch  1112 May 31 16:05 z_terminator.c
+<<<<<<<<<<<<<<<
+The output of: whoami : is
+>>>>>>>>>>>>>>>
+mitch
+<<<<<<<<<<<<<<<
+The output of: pwd : is
+>>>>>>>>>>>>>>>
+/home/mitch/A1/CP386-AS1-Process-Managment-
+<<<<<<<<<<<<<<<

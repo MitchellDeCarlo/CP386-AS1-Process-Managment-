@@ -71,15 +71,6 @@ int main(int argc, char *argv[])
     int shm_fd;
     const int SIZE = 4096;
     const char *name = "OS";
-    char write_msg[BUFFER];
-    char read_msg[BUFFER];
-
-    int fd[2];
-
-    if (pipe(fd) == -1)
-    {
-        return -1;
-    }
 
     pid_t child1 = fork();
     char comm[100];
@@ -158,46 +149,52 @@ int main(int argc, char *argv[])
                 iter = 0;
             }
         }
-        pid_t child2 = fork();
-
-        if (child2 == 0)
+        system("true > output.txt");
+        int pipes[6][2];
+        for (int i = 0; i< 6; i++)
         {
-            // char *command = "ls";
-            // char *argument_list[] = {"ls", "-l",NULL,NULL};
-            // close(fd[0]);
-            // dup2(fd[1], 1);
-            // execvp(command, argument_list);
-
-            for (int i = 0; i < 5; i++)
+            if (pipe(pipes[i]) == -1)
             {
-                // printf("%s\n",arr[i]);
-                char **strs = malloc(5 * sizeof(char *));
-
-                for (int i = 0; i < 5; i++)
-                {
-                    strs[i] = (char *)malloc(8);
-                }
-
-                filldynamicarr(strs,arr[i]);
-
-                execvp(strs[0], strs);
+                printf("Error with creating pipe\n");
+                return 1;
             }
-
-            exit(0);
         }
-        else
+        pid_t pids[5];
+        for (int i = 0; i < 5; i++)
         {
-            // close(fd[1]); // parent doesn't write
+            char **strs = malloc(5 * sizeof(char *));
 
-            // char reading_buf[1];
-            // while (read(fd[0], reading_buf, 1) > 0)
-            // {
-            //     write(1, reading_buf, 1); // 1 -> stdout
-            // }
-            free(arr);
-            // close(fd[0]);
+            for (int i = 0; i < 8; i++)
+            {
+                strs[i] = (char *)malloc(8);
+            }
+            filldynamicarr(strs, arr[i]);
+            pids[i] = fork();
+            if (pids[i] == 0)
+            {
+                close(pipes[i][READER]);
+                dup2(pipes[i][WRITER], STDOUT_FILENO);
+                execvp(strs[0], strs);
+                return 0;
+            }
+            else
+            {
+                wait(NULL);
+                char buffer[2046];
+                close(pipes[i][WRITER]);
+
+                read(pipes[i][READER], buffer, sizeof(buffer));
+
+                writeoutput(arr[i], buffer);
+
+                memset(buffer, 0, sizeof(buffer));
+            }
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
             wait(NULL);
         }
+        return 0;
     }
-    return 0;
 }
