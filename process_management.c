@@ -23,6 +23,48 @@ void writeoutput(char *command, char *output)
     fclose(fp);
 }
 
+void filldynamicarr(char **strs, char *arr)
+{
+    char temp[8];
+    int tempin = 0;
+    int indexer = 0;
+    for (int j = 0; j < strlen(arr) + 1; j++)
+    {
+        if (arr[j] != ' ')
+        {
+            if (arr[j] == '\0')
+            {
+                tempin = 0;
+                // printf("%s\n", temp);
+                strcpy(strs[indexer++], temp);
+                for (int k = 0; k < 8; k++)
+                {
+                    temp[k] = '\0';
+                }
+            }
+            else
+            {
+                temp[tempin++] = arr[j];
+                temp[tempin] = '\0';
+            }
+        }
+        else
+        {
+            tempin = 0;
+            // printf("%s\n", temp);
+            strcpy(strs[indexer++], temp);
+            for (int k = 0; k < 8; k++)
+            {
+                temp[k] = '\0';
+            }
+        }
+    }
+    for (int j = indexer; j < 5; j++)
+    {
+        strs[j] = NULL;
+    }
+}
+
 int main(int argc, char *argv[])
 {
     void *ptr;
@@ -121,7 +163,7 @@ int main(int argc, char *argv[])
         if (child2 == 0)
         {
             // char *command = "ls";
-            // char *argument_list[] = {"ls", "-l", NULL};
+            // char *argument_list[] = {"ls", "-l",NULL,NULL};
             // close(fd[0]);
             // dup2(fd[1], 1);
             // execvp(command, argument_list);
@@ -129,49 +171,16 @@ int main(int argc, char *argv[])
             for (int i = 0; i < 5; i++)
             {
                 // printf("%s\n",arr[i]);
-                char temp[8];
-                char strs[8][8];
-                int tempin = 0;
-                int counter =0;
-                for (int j = 0; j < strlen(arr[i])+1; j++)
+                char **strs = malloc(5 * sizeof(char *));
+
+                for (int i = 0; i < 5; i++)
                 {
-                    if (arr[i][j] != ' ')
-                    {
-                        if (arr[i][j] == '\0')
-                        {
-                            tempin =0;
-                           printf("%s\n", temp);
-                            strcpy(strs[counter],temp);
-                            counter++;
-                            for (int k = 0; k < 8; k++)
-                            {
-                                temp[k] = '\0';
-                            }
-                        }
-                        else
-                        {
-                            // printf("%c\n",arr[i][j]);
-                            temp[tempin++] = arr[i][j];
-                            temp[tempin] = '\0';
-                        }
-                    }
-                    else
-                    {
-                        tempin =0;
-                        printf("%s\n", temp);
-                        strcpy(strs[counter],temp);
-                        for (int k = 0; k < 8; k++)
-                        {
-                            temp[k] = '\0';
-                        }
-                    }
+                    strs[i] = (char *)malloc(8);
                 }
 
-                strcpy(strs[counter],NULL); 
+                filldynamicarr(strs,arr[i]);
 
-                for (int j = 0; j < 8; j++){
-                    printf("%s\n",strs[j]);
-                }
+                execvp(strs[0], strs);
             }
 
             exit(0);
@@ -185,7 +194,7 @@ int main(int argc, char *argv[])
             // {
             //     write(1, reading_buf, 1); // 1 -> stdout
             // }
-            // free(arr);
+            free(arr);
             // close(fd[0]);
             wait(NULL);
         }
