@@ -120,10 +120,59 @@ int main(int argc, char *argv[])
 
         if (child2 == 0)
         {
+            // char *command = "ls";
+            // char *argument_list[] = {"ls", "-l", NULL};
+            // close(fd[0]);
+            // dup2(fd[1], 1);
+            // execvp(command, argument_list);
 
-           // close(fd[0]);
-            //dup2(fd[1], 1);
-            execvp(arr[0], arr);
+            for (int i = 0; i < 5; i++)
+            {
+                // printf("%s\n",arr[i]);
+                char temp[8];
+                char strs[8][8];
+                int tempin = 0;
+                int counter =0;
+                for (int j = 0; j < strlen(arr[i])+1; j++)
+                {
+                    if (arr[i][j] != ' ')
+                    {
+                        if (arr[i][j] == '\0')
+                        {
+                            tempin =0;
+                           printf("%s\n", temp);
+                            strcpy(strs[counter],temp);
+                            counter++;
+                            for (int k = 0; k < 8; k++)
+                            {
+                                temp[k] = '\0';
+                            }
+                        }
+                        else
+                        {
+                            // printf("%c\n",arr[i][j]);
+                            temp[tempin++] = arr[i][j];
+                            temp[tempin] = '\0';
+                        }
+                    }
+                    else
+                    {
+                        tempin =0;
+                        printf("%s\n", temp);
+                        strcpy(strs[counter],temp);
+                        for (int k = 0; k < 8; k++)
+                        {
+                            temp[k] = '\0';
+                        }
+                    }
+                }
+
+                strcpy(strs[counter],NULL); 
+
+                for (int j = 0; j < 8; j++){
+                    printf("%s\n",strs[j]);
+                }
+            }
 
             exit(0);
         }
@@ -140,8 +189,6 @@ int main(int argc, char *argv[])
             // close(fd[0]);
             wait(NULL);
         }
-
     }
     return 0;
 }
-
